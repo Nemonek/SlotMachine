@@ -49,7 +49,9 @@ public class SlotMachine
     {
         if (this._saldoGiocatore == 0) throw new();
         this._saldoGiocatore--;
-        this._counter = 0;
+
+        this._counter = 0;          // Ad ogni chiamata di questa funzione significa, in teoria, che il giocatore ha fatto i due giri o che ha rinunciato ad uno o entrambi.
+
         Random r = new();
         char[] roll = { this._lettere[r.Next(0, 21)], this._lettere[r.Next(0, 21)], this._lettere[r.Next(0, 21)] };
         this._ultimoRoll = roll;
