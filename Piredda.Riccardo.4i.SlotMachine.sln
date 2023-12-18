@@ -3,17 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlotMachineLibrary", "SlotMachineLibrary\SlotMachineLibrary.csproj", "{5557C1FC-2BCC-4F0C-A7B5-F35497B73650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlotMachineLibrary", "SlotMachineLibrary\SlotMachineLibrary.csproj", "{5557C1FC-2BCC-4F0C-A7B5-F35497B73650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSlotMachine", "ConsoleSlotMachine\ConsoleSlotMachine.csproj", "{255D39F1-61B3-4363-941F-404BAC89D7B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSlotMachine", "ConsoleSlotMachine\ConsoleSlotMachine.csproj", "{255D39F1-61B3-4363-941F-404BAC89D7B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSlotMachine", "WPFSlotMachine\WPFSlotMachine.csproj", "{291184DB-E333-4495-B1D8-A8F1E521F5BE}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A675686E-73B3-486C-B723-2DAACC8090FB}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -47,5 +43,23 @@ Global
 		{255D39F1-61B3-4363-941F-404BAC89D7B1}.Release|x64.Build.0 = Release|Any CPU
 		{255D39F1-61B3-4363-941F-404BAC89D7B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{255D39F1-61B3-4363-941F-404BAC89D7B1}.Release|x86.Build.0 = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|x64.Build.0 = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Debug|x86.Build.0 = Debug|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|x64.Build.0 = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{291184DB-E333-4495-B1D8-A8F1E521F5BE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A675686E-73B3-486C-B723-2DAACC8090FB}
 	EndGlobalSection
 EndGlobal

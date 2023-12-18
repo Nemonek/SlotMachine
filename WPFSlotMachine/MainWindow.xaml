@@ -1,0 +1,84 @@
+﻿<Window x:Class="WPFSlotMachine.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFSlotMachine"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Slot machine" Height="450" Width="800">
+    <Grid ShowGridLines="True">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="150"></RowDefinition>
+			<RowDefinition Height="50"></RowDefinition>
+			<RowDefinition ></RowDefinition>
+		</Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Grid>
+            <Border Grid.Row="0" Grid.Column="0" Background="LightBlue" VerticalAlignment="Top" BorderThickness="1" CornerRadius="0, 0, 5, 5">
+                <TextBlock Height="auto" FontSize="20" HorizontalAlignment="Center" >Credito</TextBlock>
+            </Border>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="70" Text="0" x:Name="Credito" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Content="aggiungi" Margin="5, 0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Height="30" Click="AggiungiCredito">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+            <TextBlock Margin="5" VerticalAlignment="Center">Aggiungere: </TextBlock>
+            <TextBox x:Name="QuantoCreditoAggiungere" VerticalContentAlignment="Center" TextAlignment="Center" Height="30" Width="60"/>
+        </StackPanel>
+
+        <Border Margin="5, 0" BorderBrush="Red" BorderThickness="1" CornerRadius="8.7" Grid.Row="0" Grid.Column="1">
+            <TextBlock x:Name="PrimaLettera" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100">A</TextBlock>
+        </Border>
+        <Border Margin="5, 0" BorderBrush="Red" BorderThickness="1" CornerRadius="8.7" Grid.Row="0" Grid.Column="2">
+            <TextBlock x:Name="SecondaLettera" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100">A</TextBlock>
+        </Border>
+        <Border Margin="5, 0" BorderBrush="Red" BorderThickness="1" CornerRadius="8.7" Grid.Row="0" Grid.Column="3">
+            <TextBlock x:Name="TerzaLettera" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100">A</TextBlock>
+        </Border>
+       
+        <Button Margin="5" Grid.Row="1" Grid.Column="1" Content="tieni" Click="TieniUno">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Margin="5" Grid.Row="1" Grid.Column="2" Content="tieni" Click="TieniDue">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Margin="5" Grid.Row="1" Grid.Column="3" Content="tieni" Click="TieniTre">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Grid.Row="2" Grid.Column="1" Click="RollaLettere">Roll</Button>
+        <Grid Grid.Row="0" Grid.Column="5">
+            <Border Background="LightBlue" VerticalAlignment="Top" BorderThickness="1" CornerRadius="0, 0, 5, 5">
+                <TextBlock Height="auto" FontSize="20" HorizontalAlignment="Center" >Giri fatti</TextBlock>
+            </Border>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock FontSize="70" Text="0" x:Name="GiriRimanenti"/>
+                <TextBlock FontSize="70" Text="/2"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
