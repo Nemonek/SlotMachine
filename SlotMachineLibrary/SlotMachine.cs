@@ -7,6 +7,8 @@ public class SlotMachine
     private char[] _lettere = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
 
     private int _saldoGiocatore;
+    private int _ultimoRisultato;
+    public int UltimoRisultato { get => this._ultimoRisultato; }
 
     public int SaldoGiocatore { get => this._saldoGiocatore; private set => this._saldoGiocatore = value; }
 
@@ -18,6 +20,7 @@ public class SlotMachine
     public SlotMachine() {
         this._saldoGiocatore = 0;
         this._counter = 2;
+        this._ultimoRisultato = 0;
     }
 
     public void AggiungiCredito(int n)
@@ -29,6 +32,8 @@ public class SlotMachine
 
     public char[] EseguiRollMantenendo(int[] input)
     {
+        if (this._saldoGiocatore == 0) throw new();
+
         Random r = new();
 
         this._ultimoRoll[0] = (input[0] == -1) ? this._lettere[r.Next(0, 21)] : this._ultimoRoll[0];
@@ -42,12 +47,15 @@ public class SlotMachine
 
     public char[] EseguiRoll()
     {
+        if (this._saldoGiocatore == 0) throw new();
         this._saldoGiocatore--;
         this._counter = 0;
         Random r = new();
         char[] roll = { this._lettere[r.Next(0, 21)], this._lettere[r.Next(0, 21)], this._lettere[r.Next(0, 21)] };
         this._ultimoRoll = roll;
-        int premio = DeterminaPremio();
+        int ultimo = DeterminaPremio();
+        this._ultimoRisultato = ultimo;
+        this._saldoGiocatore+= ultimo;
 
         return this._ultimoRoll;
     }

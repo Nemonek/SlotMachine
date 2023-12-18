@@ -37,6 +37,7 @@ namespace WPFSlotMachine
 
         private void RollaLettere(object sender, RoutedEventArgs e)
         {
+            if (m.SaldoGiocatore == 0) return;
             
             char[] roll;
             if (m.Counter < 2 && (this._tieni[0] != -1 || this._tieni[1] != -1 || this._tieni[2] != -1))
@@ -51,6 +52,7 @@ namespace WPFSlotMachine
             SecondaLettera.Text = roll[1].ToString();
             TerzaLettera.Text = roll[2].ToString();
             Credito.Text = m.SaldoGiocatore.ToString(); ;
+            Premio.Text = m.UltimoRisultato.ToString();
             this._tieni[0] = -1;
             this._tieni[1] = -1;
             this._tieni[2] = -1;
