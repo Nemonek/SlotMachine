@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Slot machine" Height="450" Width="800">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
 		<Grid.RowDefinitions>
 			<RowDefinition></RowDefinition>
 			<RowDefinition Height="50"></RowDefinition>
@@ -70,7 +70,13 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Grid.Row="2" Grid.Column="1" Click="RollaLettere">Roll</Button>
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Click="RollaLettere" Content="Roll">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5, 5, 0, 0"/>
+                </Style>
+            </Button.Resources>
+        </Button>
         <Grid Grid.Row="0" Grid.Column="5">
             <Border Background="LightBlue" VerticalAlignment="Top" BorderThickness="1" CornerRadius="0, 0, 5, 5">
                 <TextBlock Height="auto" FontSize="20" HorizontalAlignment="Center" >Giri fatti</TextBlock>
