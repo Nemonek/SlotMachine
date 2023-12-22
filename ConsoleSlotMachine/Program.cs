@@ -1,100 +1,121 @@
 ﻿using SlotMachineLibrary;
 
-// Problema nella libreria: il punteggio del round n viene accreditato solo al round n+1
-
-SlotMachine m = new();
-string input;
-Console.WriteLine("Benvenuto!");
-while (true)
+namespace ConsoleSlotMachine
 {
-    Console.WriteLine("Seleziona l'operazione da fare:");
-    Console.WriteLine("1) Aggiungere monete");
-    Console.WriteLine("2) Rollare");
-    Console.WriteLine("3) Verificare credito");
-    Console.WriteLine("4) Esci");
-    input = Console.ReadLine()!;
-    if (input == "4") break;     // C'è bisogno di questo controllo poichè break nello switch fa uscire dal singolo caso.
-    switch(input)
+    internal class Program
     {
-        case "1":
-            AggiungiMonete();
-            break;
-
-        case "2":
-            rolla();
-            break;
-
-        case "3":
-            Console.WriteLine($"Credito attuale: {m.SaldoGiocatore}.");
-            break;
-
-        default:
-            Console.WriteLine("Errore: comando non riconosciuto.");
-            break;
-    }
-}
-
-void rolla()
-{
-    if(m.SaldoGiocatore == 0)
-    {
-        Console.WriteLine("Errore: il saldo è vuoto! Inserire dei crediti prima di giocare.");
-        return;
-    }
-    Console.WriteLine($"Saldo giocatore: {m.SaldoGiocatore}");
-    char[] roll = m.EseguiRoll();
-    string tieni;
-    Console.WriteLine($"Risultato del roll: |{roll[0]} - {roll[1]} - {roll[2]}|");
-
-    Console.WriteLine("Lei ha ora la possibilità di tenere una o più lettere tra quelle uscite.");
-    Console.WriteLine("Per tenere delle lettere digiti il loro numero: la prima è 1, la seconda è 2 ecc; per tenere più lettere separi i numeri con uno spazio, per uscire digiti a.");
-    
-    while (m.Counter < 2)
-    {
-        tieni = Console.ReadLine()!;
-        int[] par = { -1, -1, -1 };
-        if (tieni == "a") return;
-        string[] s = tieni.Split(' ');
-        if(s.Length > 3)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Input invalido: possibilità persa!");
-            return;
+            SlotMachine machine = new();
+            Console.WriteLine("Benvenuto alla slot machine!");
+            bool flag = true;
+            string input = "";
+            while (flag) {
+                Console.WriteLine("La preghiamo di selezionare un operazione da fare:");
+                Console.WriteLine("1) Aggiungere credito");
+                Console.WriteLine("2) Esegui un roll");
+                Console.WriteLine("e) Exit");
+                ScriviInGialloNoCapo("Input: ");
+                input = Console.ReadLine()!;
+
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("Inserire un numero maggiore di 0: ");
+                        if (!int.TryParse(Console.ReadLine(), out int res) && res <= 0)
+                            ScriviInRosso("Errore: input invalido; riprovare!");
+
+                        else {
+                            machine.AggiungiCredito(res);
+                            ScriviInVerde($"Credito aggiornato: {machine.Credito}");
+                        }
+                        Attendi();
+                        break;
+
+                    case "2":
+                        if (machine.Credito == 0) {
+                            ScriviInRosso($"Attenzione: il suo credito è insufficiente. Credito: {machine.Credito}");
+                            Attendi();
+                            break;
+
+                        }
+                        char[] risultato = machine.Rolla();
+                        ScriviInVerde($"Il risultato del roll è: |{risultato[0]} - {risultato[1]} - {risultato[2]}|");
+                        Console.Write($"Lo vuole tenere o vuole riprovare? Le rimangono {machine.Rimanenti}/3. Digiti S/s per tenere il corrente risultato, N/n per riprovare.");
+                        string i = Console.ReadLine()!.ToLower();
+
+                        while ((i != "s" && i != "n") || i.Length > 1) {
+                            ScriviInRosso("Input Invalido: riprovare!");
+                            i = Console.ReadLine()!.ToLower();
+                        }
+                        if (i == "s") {
+                            machine.NotificaRinuncia();
+                            ScriviInVerde($"Ha appena accettato il risultato |{risultato[0]} - {risultato[1]} - {risultato[2]}|.");
+                            Console.WriteLine("Eventuali vincite sono state registrate:");
+                            Console.WriteLine($"Credito attuale: {machine.Credito}");
+                            Console.WriteLine($"Vincita attuale: {machine.Vincita}");
+                            Attendi();
+                        }
+                        else {
+                            string i2 = "";
+                            ScriviInVerde("Ha deciso di riprovare:");
+                            Console.WriteLine("Ha la possibilità di tenere uno, due, tutti o nessuno del risultato corrente.");
+                            Console.WriteLine("Digiti un numero da 1 a 3 per tenere uno slot (Attenzione: le verrà chiesta conferma della selezione e potrà decidere di tenere più slot.)");
+                            Console.WriteLine("Digiti 0 per non tenere nessuno slot.");
+
+                            bool flag2 = true;
+
+                            while( flag2 ) {
+                                i2 = Console.ReadLine()!.ToLower();
+                                while( i2 != "0" && i2 != "1" && i2 != "2" && i2 != "3" ) {
+                                    ScriviInRosso("Errore: input non valido. Se non vuole tenere il risultato di nessuno slot digiti 0.");
+                                }
+                            } 
+                        }
+                        break;
+
+                    case "e":
+                        flag = false;
+                        ScriviInRosso("Arrivederci!");
+                        break;
+
+                    default:
+                        ScriviInRosso("Comando invalido!");
+                        break;
+                }
+                Console.Clear();
+            }
         }
-        foreach(string str in s)
+
+        static void ScriviInRosso(string s)
         {
-            if(int.TryParse(str, out int res) && res-1 < 3 && res-1 >= 0)
-            {
-                par[res-1] = res-1;
-            }
-            else
-            {
-                Console.WriteLine("Input invalido: possibilità persa!");
-                return;
-            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(s);
+            Console.ResetColor();
         }
-        roll = m.EseguiRollMantenendo(par);
-        Console.WriteLine($"Risultato del roll: |{roll[0]} - {roll[1]} - {roll[2]}|");
-        par[0] = -1;
-        par[1] = -1;
-        par[2] = -1;
+
+        static void ScriviInVerde(string s)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(s);
+            Console.ResetColor();
+        }
+        static void ScriviInGiallo(string s)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(s);
+            Console.ResetColor();
+        }
+        static void ScriviInGialloNoCapo(string s)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(s);
+            Console.ResetColor();
+        }
+        static void Attendi()
+        {
+            ScriviInGiallo("Premere un qualsiasi tasto per continuare.");
+            Console.ReadKey();
+        }
     }
-    Console.WriteLine($"Saldo giocatore: {m.SaldoGiocatore}");
-
-}
-
-void AggiungiMonete()
-{
-    Console.WriteLine($"Credito attuale: {m.SaldoGiocatore}");
-    Console.Write("Quanto credito vuole aggiungere? inserisca un numero: ");
-    string n = Console.ReadLine()!;
-    while(!int.TryParse(n, out int res) || res <= 0)
-    {
-        if (n == "a")
-            return;
-        Console.WriteLine("Errore: inserire un numero valido o digitare 'a' per annullare");
-        n = Console.ReadLine()!;
-    }
-
-    // A questo punto sappiamo già che il numero è valido
-    m.AggiungiCredito(int.Parse(n));
 }
