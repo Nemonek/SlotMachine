@@ -15,12 +15,14 @@ public class SlotMachine
     private char[] _lettere = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
     private Random _r;   // impostata come campo poichè la continua creazione di istanze della classe Random rischia di fargli produrre lo stesso risultato
 
+    /* PROPERTY */
     public int Credito { get => this._credito; }
     public int Vincita { get => this._vincita; }
     public int Rimanenti { get => this._rimanenti; }
     public char[] UltimoRoll { get => this._ultimoRoll; }
     public bool PossoBloccareSlot { get => this._possoBloccareSlot;  }
 
+    // Chi usa la classe può impostare lo stato degli slot a piacimento.
     public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = value; }
     public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
     public bool Slot3 { get => this._slot3.IsLocked; set => this._slot3.IsLocked = value; }
@@ -62,10 +64,6 @@ public class SlotMachine
             throw new InvalidOperationException();
 
         if ( this._rimanenti == 3 || this._rimanenti == 0 ) {
-
-            if (this._rimanenti == 0) {
-                this._rimanenti = 3;
-            }
             this._rimanenti--;
             this._credito--;
             this._possoBloccareSlot = true;
@@ -80,9 +78,6 @@ public class SlotMachine
             return retVal;
         }
         else {
-            // this._rimanenti andrà a 0, quindi questo è l'ultimo roll disponibile: l'utente non può non ottenere il premio (se c'è un premio)
-            if (this._rimanenti == 1)
-                this._vincita += DeterminaPremio();
 
             this._rimanenti--;
             
@@ -97,6 +92,14 @@ public class SlotMachine
             this._slot1.IsLocked = false;
             this._slot2.IsLocked = false;
             this._slot3.IsLocked = false;
+
+            // this._rimanenti è a 0, quindi questo è l'ultimo roll disponibile: l'utente non può non ottenere il premio (se c'è un premio)
+            if (this._rimanenti == 0)
+            {
+                this._rimanenti = 3;
+                this._vincita += DeterminaPremio();
+                this._possoBloccareSlot = false;
+            }
 
             return retVal;
         }
@@ -126,6 +129,7 @@ public class SlotMachine
     public void NotificaRinuncia() {
         this._vincita += DeterminaPremio();
         this._rimanenti = 3;
+        this._possoBloccareSlot = false;
     }
 
 }

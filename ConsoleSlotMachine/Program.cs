@@ -46,8 +46,14 @@ namespace ConsoleSlotMachine
                         LabelEstrazione:
                         char[] risultato = machine.Rolla();
                         ScriviInVerde($"Il risultato del roll è: |{risultato[0]} - {risultato[1]} - {risultato[2]}|");
-                        // Dopo ogni roll il contatore machine.Rimanenti viene decrementato: se arriva a 0 i tentativi sono esauriti e non è neccessario chiedere all'utente se vuole tenere qualcosa
-                        if (machine.Rimanenti == 0)
+
+                        // Questo controllo funziona grazie ad un "artificio" particolare:
+                        // quando si raggiunge l'ultimo tentativo a disposizione e si decide di usarlo si viene rimandati al label soprastante ( LabelEstrazione ): in quel punto, poichè quello è l'ultimo tentativo
+                        // disponibile il contatore della classe vale 1, poi, quando verrà chiamata la funzione Rolla() questo raggiungerà il valore 0, e sarà subito rimesso a 3, poichè la classe non può permettersi
+                        // di rimanere indietro nei conteggi per favorire l'UI ( se il valore 0 venisse portato a 3 non al giro in cui si raggiunge 0, ma al giro successivo, basterebbe, per l'UI controllare quando
+                        // ci si trova di fronte ad uno 0, tuttavia, non è accettabile che la classe dipenda dall'interazione con l'UI per operare ).
+                        // In conclusione, ad ogni singolo ciclo
+                        if (machine.Rimanenti == 3)
                         {
                             ScriviInRosso("Tentativi esauriti.");
                             Console.WriteLine("Eventuali vincite sono state registrate:");
@@ -58,7 +64,7 @@ namespace ConsoleSlotMachine
                             break;
                         }
                         
-                        Console.Write($"Lo vuole tenere o vuole riprovare? Le rimangono {machine.Rimanenti}/3. Digiti S/s per tenere il corrente risultato, N/n per riprovare.");
+                        Console.Write($"Lo vuole tenere o vuole riprovare? Le rimangono {machine.Rimanenti}/3 tentativi. Digiti S/s per riprovare, N/n per accettare il corrente risultato.");
 
                         string i = Console.ReadLine()!.ToLower();
 
@@ -68,7 +74,7 @@ namespace ConsoleSlotMachine
                             i = Console.ReadLine()!.ToLower();
                         }
                         // Rinuncia a tenere le lettere e accetta questo risultato
-                        if (i == "s") {
+                        if (i == "n") {
                             machine.NotificaRinuncia();
                             ScriviInVerde($"Ha appena accettato il risultato |{risultato[0]} - {risultato[1]} - {risultato[2]}|.");
                             Console.WriteLine("Eventuali vincite sono state registrate:");
@@ -141,7 +147,11 @@ namespace ConsoleSlotMachine
         {
             string[] s = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             foreach (string str in s)
-                if (!int.TryParse(str, out int n) && n - 1 >= 0 && n - 1 < 3)
+                // Se l'input non è convertibile è invalido.
+                if (!int.TryParse(str, out int n))
+                    return true;
+                // Se l'input viene convertito a intero deve rientrare in un range specifico.
+                else if (n - 1 < -1 || n - 1 > 3)
                     return true;
         
             return false;

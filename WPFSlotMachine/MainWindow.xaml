@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Slot machine" Height="450" Width="800">
+    
     <Grid ShowGridLines="False">
 		<Grid.RowDefinitions>
 			<RowDefinition></RowDefinition>
@@ -21,12 +22,20 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
+        <!--<Popup Placement="Bottom" Name="myPopup">
+            <Border Background="LightGreen" CornerRadius="5">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock>Credito aggiunto.</TextBlock>
+                </StackPanel>
+            </Border>
+        </Popup>-->
+        
         <Grid>
             <Border Grid.Row="0" Grid.Column="0" Background="LightBlue" VerticalAlignment="Top" BorderThickness="1" CornerRadius="0, 0, 5, 5">
                 <TextBlock Height="auto" FontSize="20" HorizontalAlignment="Center" >Credito</TextBlock>
             </Border>
             <TextBlock Grid.Row="0" Grid.Column="0" FontSize="70" Text="0" x:Name="Credito" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Content="aggiungi" Margin="5, 0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Height="30" Click="AggiungiCredito">
+            <Button Content="aggiungi" Margin="5, 0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Height="30" Click="AggiungiCredito_Evento">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
@@ -34,9 +43,12 @@
                 </Button.Resources>
             </Button>
         </Grid>
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-            <TextBlock Margin="5" VerticalAlignment="Center">Aggiungere: </TextBlock>
-            <TextBox x:Name="QuantoCreditoAggiungere" VerticalContentAlignment="Center" TextAlignment="Center" Height="30" Width="60"/>
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Margin="5" VerticalAlignment="Center">Aggiungere: </TextBlock>
+                <TextBox x:Name="QuantoCreditoAggiungere" KeyDown="QuantoCreditoAggiungere_EnterPressed" VerticalContentAlignment="Center" TextAlignment="Center" Height="30" Width="60"/>
+            </StackPanel>
+            <TextBlock x:Name="AggiungiCredito_InputInvalidoTextBlock" Visibility="Collapsed" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center">Input invalido!</TextBlock>
         </StackPanel>
 
         <Border Margin="5, 0" BorderBrush="Red" BorderThickness="1" CornerRadius="8.7" Grid.Row="0" Grid.Column="1">
@@ -49,21 +61,21 @@
             <TextBlock x:Name="TerzaLettera" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100">A</TextBlock>
         </Border>
        
-        <Button Margin="5" Grid.Row="1" Grid.Column="1" Content="tieni" Click="TieniUno">
+        <Button Name="BottoneTieni1" Margin="5" Grid.Row="1" Grid.Column="1" Content="tieni" Click="TieniUno">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Margin="5" Grid.Row="1" Grid.Column="2" Content="tieni" Click="TieniDue">
+        <Button Name="BottoneTieni2" Margin="5" Grid.Row="1" Grid.Column="2" Content="tieni" Click="TieniDue">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Margin="5" Grid.Row="1" Grid.Column="3" Content="tieni" Click="TieniTre">
+        <Button Name="BottoneTieni3" Margin="5" Grid.Row="1" Grid.Column="3" Content="tieni" Click="TieniTre">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -82,8 +94,8 @@
                 <TextBlock Height="auto" FontSize="20" HorizontalAlignment="Center" >Giri fatti</TextBlock>
             </Border>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="70" Text="0" x:Name="GiriRimanenti"/>
-                <TextBlock FontSize="70" Text="/2"/>
+                <TextBlock FontSize="70" x:Name="GiriRimanenti"/>
+                <TextBlock FontSize="70" Text="/3"/>
             </StackPanel>
         </Grid>
 
