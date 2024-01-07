@@ -21,4 +21,13 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Media\Assets.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Media\Assets2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -12,7 +12,7 @@ public class SlotMachine
     private Slot _slot1;
     private Slot _slot2;
     private Slot _slot3;
-    private char[] _lettere = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
+    private char[] _lettere = { 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
     private Random _r;   // impostata come campo poichè la continua creazione di istanze della classe Random rischia di fargli produrre lo stesso risultato
 
     /* PROPERTY */
@@ -22,6 +22,9 @@ public class SlotMachine
     public char[] UltimoRoll { get => this._ultimoRoll; }
     public bool PossoBloccareSlot { get => this._possoBloccareSlot;  }
 
+    // Chi usa la classe può vedere quali simboli sono usati dalla medesima per operare
+    public char[] OttieniSimboli() => this._lettere;
+    
     // Chi usa la classe può impostare lo stato degli slot a piacimento.
     public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = value; }
     public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
@@ -119,7 +122,8 @@ public class SlotMachine
 
             if (this._ultimoRoll[0] == 'z' && this._ultimoRoll[1] == 'z' && this._ultimoRoll[2] == 'z') return 100;
 
-            if (n + 2 > 21) return 0;
+            // PROBLEMA: IN CASO DI CAMBIO DELLA LUNGHEZZA DELL'ARRAY DI LETTERE IL PROGRAMMA CRASHA SE NON SI CAMBIA ANCHE QUA
+            if (n + 2 >= 20) return 0;
 
             if (this._lettere[n + 1] == this._ultimoRoll[1] && this._lettere[n + 2] == this._ultimoRoll[2]) return 50;
             return 0;
@@ -127,6 +131,7 @@ public class SlotMachine
     }
 
     public void NotificaRinuncia() {
+        if (this._rimanenti == 3) throw new();
         this._vincita += DeterminaPremio();
         this._rimanenti = 3;
         this._possoBloccareSlot = false;
