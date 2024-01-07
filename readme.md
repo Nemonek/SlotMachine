@@ -16,7 +16,8 @@
 * creazione di un programma WPF ( Windows Presentation Foundation ) che faccia uso della classe.
 
 ## Linee guida generali adottate
-* Una libreria deve essere completamente indipendente dal programma che la andrà ad usare: essa **non** deve interfacciarsi con l'utilizzatore, ma deve fornire all'utilizzatore i metodi perché lui sia in grado di interfacciarsi con la classe. In parole brevi: **non** è accettabile che la classe dipenda dall'utilizzatore.
+1) Una libreria deve essere completamente indipendente dal programma che la andrà ad usare: essa **non** deve interfacciarsi con l'utilizzatore, ma deve fornire all'utilizzatore i metodi perché lui sia in grado di interfacciarsi con la classe. In parole brevi: **non** è accettabile che la classe dipenda dall'utilizzatore.
+2) L'utilizzatore di una classe non ha bisogno di sapere come questa è implementata. 
 
 ## Lo standard Microsoft per la nomenclatura dei campi privati di una classe
 Secondo la convenzione diffusa ed usata da Microsoft i nomi dei campi privati di una classe devono iniziare con il trattino basso (underscore _) ed il nome effettivo del campo deve iniziare con una lettera minuscola (lower case).
@@ -117,6 +118,13 @@ Per le property dei vari campi controllare la sezione del campo.
 ### Premesse
 La classe mette a disposizione dei modesti e riassuntivi commenti XML di documentazione per i metodi esposti ( ove necessario ).<br>
 In questa sezione ci si potrebbe riferire ai tentativi come 'se si hanno 3 tentativi", "se si sono appena finiti i tentativi": tenere a mente durante la lettura che quando si sono appena finiti i tentativi questi vengono riportati a 3, e quando si hanno 3 tentativi significa che sono appena finiti poiché l'unico modo per averne 3 è rinunciare a quelli rimanenti o finirli.
+### Creare un oggetto SlotMachine
+Importare il namespace 'SlotMachineLibrary':
+```C#
+using SlotMachineLibrary;
+```
+Creare un oggetto SlotMachine. ( vedi sezione 'Uso del costruttore' per la classe SlotMachine )
+
 ### Aggiunta di credito
 L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ AggiungiCredito(int) : void': l'utilizzatore è incaricato di fornire un valore maggiore di 0, in caso contrario viene sollevata un'eccezione di tipo 'ArgumentException'.
 ### Esecuzione di un roll
@@ -128,6 +136,10 @@ Questo metodo non deve essere chiamato quando sono appena finiti i tentativi: in
 ### Bloccare 1 o più slot
 Per bloccare uno o più slot è possible usare le rispettive property ( vedi sezione attributi classe ).<br>
 Nel caso in cui gli slot vengano bloccati quando non possono essere bloccati la classe ignorerà il loro blocco.
+
+## Specifiche finali
+1) La classe 'Slot' non è esposta poiché all'utilizzatore non è necessario sapere che la classe 'SlotMachine' lavora con la classe 'Slot'.
+2) Il modificatore della property '_isLocked' delle istanze della classe 'Slot' è utilizzabile solo dall'unità di compilazione a cui la classe appartiene: in questo caso è la liberia. ( Per maggiori informazioni sugli assembly fare riferimento alla [documentazione ufficiale Microsoft](https://learn.microsoft.com/en-us/dotnet/standard/assembly/) ) 
 
 ## Accortezze in fase di compilazione
 1) Per non dover copiare a mano l'immagine usata nel programma WPF nella directory di output del file eseguibile inserire nel file NomeProgetto.csproj le seguenti righe di codice:
