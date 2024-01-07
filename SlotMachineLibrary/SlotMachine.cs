@@ -25,8 +25,6 @@ public class SlotMachine
     // Chi usa la classe può vedere quali simboli sono usati dalla medesima per operare
     public char[] OttieniSimboli() => this._lettere;
     
-    // Chi usa la classe può impostare lo stato degli slot a piacimento.
-    // Controlla possibilità di errore: gli slot possono essere bloccati anche se il flag è = false
     public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = value; }
     public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
     public bool Slot3 { get => this._slot3.IsLocked; set => this._slot3.IsLocked = value; }
@@ -57,14 +55,6 @@ public class SlotMachine
 
         this._credito += n;
     }
-    /*
-     Il player può fare 3 giri spendendo 1 credito:
-     al primo non può decidere se tenere qualcosa, al 2 ed al 3 si; può anche rinunciare ai due giri.
-
-        Se degli slot sono bloccati e può rollare, quindi il contatore è = 2 o a 1 rolla solo quelli sbloccati, se non ce ne sono sbloccati agisce autonomamente
-    e li rirolla tutti.
-     */
-
     /// <summary>
     /// Esegue un roll se possibile.
     /// </summary>
@@ -131,7 +121,6 @@ public class SlotMachine
 
             if (this._ultimoRoll[0] == 'z' && this._ultimoRoll[1] == 'z' && this._ultimoRoll[2] == 'z') return 100;
 
-            // PROBLEMA: IN CASO DI CAMBIO DELLA LUNGHEZZA DELL'ARRAY DI LETTERE IL PROGRAMMA CRASHA SE NON SI CAMBIA ANCHE QUA
             if (n + 2 >= 20) return 0;
 
             if (this._lettere[n + 1] == this._ultimoRoll[1] && this._lettere[n + 2] == this._ultimoRoll[2]) return 50;
