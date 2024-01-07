@@ -22,6 +22,91 @@
 Secondo la convenzione diffusa ed usata da Microsoft i nomi dei campi privati di una classe devono iniziare con il trattino basso (underscore _) ed il nome effettivo del campo deve iniziare con una lettera minuscola (lower case).
 Per quanto riguarda le proprietà associate ai vari campi, queste devono iniziare con lettera maiuscola (upper case).
 
+## Premesse
+Con la parola 'roll' si intende un giro delle rotelle della slot machine.<br>
+In questa documentazione quando si definisce come un utilizzatore debba interfacciarsi con la classe e vengono nominate delle funzioni queste vengono nominate secondo notazione UML.
+
+## La classe SlotMachine
+### Attributi
+```C#
+private int _credito;
+public int Credito { get => this._credito; }
+```
+Credito inserito dall'utente.<br>
+Il campo non è modificabile da codice all'infuori della classe.
+```C#
+private int _vincita;
+public int Vincita { get => this._vincita; }
+```
+Vincita totale accumulata dall'utente: una volta ritirata viene aggiunta al credito dell'utente.<br>
+Il campo non è modificabile da codice all'infuori della classe.
+```C#
+private int _rimanenti;
+public int Rimanenti { get => this._rimanenti; }
+```
+Contatore dei tentativi rimanenti ( vedi comportamento specificato nella sezione 'Requisiti dei compito' ); non puà superare il valore 3 ( caratteristica dovuta all'implementazione della classe ).<br>
+Il campo non è modificabile da codice all'infuori della classe.
+```C#
+private char[] _ultimoRoll;
+public char[] UltimoRoll { get => this._ultimoRoll; }
+```
+Array contenente il risultato dell'ultimo roll.<br>
+Il campo non è modificabile da codice all'infuori della classe.
+```C#
+private bool _possoBloccareSlot;
+public bool PossoBloccareSlot { get => this._possoBloccareSlot;  }
+```
+Valore booleano il cui scopo è permettere all'utilizzatore della classe di sapere se nel periodo che intercorre tra un roll ed un altro si possono bloccare degli slot.<br>
+Nel caso in cui l'utilizzatore provi a bloccare degli slot quando questo flag è impostato su falso la classe solleva un 'InvalidOperationException'.<br>
+Il campo non è modificabile da codice all'infuori della classe.
+```C#
+private Slot _slot1;
+private Slot _slot2;
+private Slot _slot3;
+
+public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = value; }
+public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
+public bool Slot3 { get => this._slot3.IsLocked; set => this._slot3.IsLocked = value; }
+```
+Campi privati di tipo 'Slot' ( vedi sezione 'dipendenze' ): all'utilizzatore è permesso di modificarli e di verificare il loro valore.
+```C#
+private char[] _lettere = { 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
+```
+Lettere usate dalla classe per lavorare. Rimane a discrezione dell'utilizzatore se aggiungere ( nel proprio codice ) un metodo che associa ad ogni lettera un altro simbolo per poi usare quelli.<br>
+Questo campo è accessibile in sola lettura solo con il metodo pubblico 'OttieniSimboli' ( vedi sezione metodi ).
+```C#
+private Random _r;
+```
+Campo privato e non accessibile a codice esterno alla classe: questa variabile è usata per rendere randomici i roll: di norma non sarebbe necessario impostarla come campo, tuttavia la continua generazione di istanze della classe 'Random' ad ogni roll è un peso inutile per il programma, inoltre nel caso di una generazione troppo rapida di variabili di questo tipo c'è il rischio che due ritornino lo stesso valore. 
+### Costruttore
+```C#
+public SlotMachine()
+```
+Costruttore di default, viene chiamato dal programma per inizializzare i campi della classe.<br>
+Il valore del campo '_possoBloccareSlot' è inizializzato a false.
+
+### Uso del costruttore
+Per usare il costruttore di default basta usare la sintassi più classica
+```C#
+SlotMachine machine = new SlotMachine();
+```
+Oppure si può usare la sintassi in vigore da C# 9 chiamata Target-typed new: con questa sintassi il compilatore risale automaticamente al tipo dichiarato per la variabile, e ne evita la ripetizione nella chiamata al costruttore.
+```C#
+SlotMachine machine = new();
+```
+
+### Property
+Per le property dei vari campi controllare la sezione del campo.
+
+## Interfacciarsi con la classe SlotMachine
+### Premesse
+La classe mette a disposizione dei modesti e riassuntivi commenti XML di documentazione per i metodi esposti ( ove necessario ).
+### Aggiunta di credito
+L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ AggiungiCredito(int) : void': l'utilizzatore è incaricato di fornire un valore maggiore di 0, in caso contrario viene sollevata una eccezione di tipo 'ArgumentException'.
+### Esecuzione di un roll
+Per eseguire un roll l'utilizzatore può effettuare una chiamata alla funzione '+ Rolla() : char[]': questa ritornerà un array di caratteri con lunghezza 3 contenente il risultato del roll appena fatto ( quel valore sarà disponibile nella property '+ UltimoRoll : char[]' fino al roll successivo ).<br>
+Il metodo appena descritto verrà correttamente eseguito solo se è disponibile del credito: in caso non lo sia l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' sarà sollevata.
+
 ## Accortezze in fase di compilazione
 1) Per non dover copiare a mano l'immagine usata nel programma WPF nella directory di output del file eseguibile inserire nel file NomeProgetto.csproj le seguenti righe di codice:
     ```XML

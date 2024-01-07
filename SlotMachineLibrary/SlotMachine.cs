@@ -26,6 +26,7 @@ public class SlotMachine
     public char[] OttieniSimboli() => this._lettere;
     
     // Chi usa la classe può impostare lo stato degli slot a piacimento.
+    // Controlla possibilità di errore: gli slot possono essere bloccati anche se il flag è = false
     public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = value; }
     public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
     public bool Slot3 { get => this._slot3.IsLocked; set => this._slot3.IsLocked = value; }
@@ -44,7 +45,11 @@ public class SlotMachine
 
         this._r = new Random();
     }
-
+    /// <summary>
+    /// Permette l'aggiunta di credito.
+    /// </summary>
+    /// <param name="n">Numero maggiore di 0 che rappresenta quanto credito verrà aggiunto.</param>
+    /// <exception cref="ArgumentException">Sollevata quando viene passato come parametro un valore minore o uguale di 0.</exception>
     public void AggiungiCredito(int n)
     {
         if (n <= 0)
@@ -60,12 +65,16 @@ public class SlotMachine
     e li rirolla tutti.
      */
 
-
+    /// <summary>
+    /// Esegue un roll se possibile.
+    /// </summary>
+    /// <returns>char[3] contente il risultato del roll.</returns>
+    /// <exception cref="InvalidOperationException">Se non c'è credito l'operazione è considerata invalida.</exception>
     public char[] Rolla() {
 
         if (this._credito == 0)
             throw new InvalidOperationException();
-
+        // Controllare controllo: this._rimanenti == 0 potrebbe non servire 
         if ( this._rimanenti == 3 || this._rimanenti == 0 ) {
             this._rimanenti--;
             this._credito--;
