@@ -20,8 +20,6 @@ namespace WPFSlotMachine
         private SlotMachine _machine;
 
         private DispatcherTimer _inputInvalido;
-        private BitmapSource[] _croppedImages;
-
         private Dictionary<char, BitmapSource> _associazioneConSimboliClasse;
 
         public MainWindow() {
@@ -41,7 +39,6 @@ namespace WPFSlotMachine
             PulsanteRinuncia.IsEnabled = this._machine.PossoBloccareSlot;
 
             GiriRimanenti.Text = $"{this._machine.Rimanenti}";
-            this._croppedImages = new BitmapSource[20];
         }
 
         private void InizializzaImmagini() {
@@ -62,10 +59,12 @@ namespace WPFSlotMachine
                 {
                     tmp = new(b, new Int32Rect(( larghezzaCarta * i ), ( altezzaCarta * j ), larghezzaCarta, altezzaCarta));
                     this._associazioneConSimboliClasse.Add(simboliUsatiDallaClasse[counter], BitmapFrame.Create(tmp));
-                    MostraSlot1.Source = tmp;
                     counter++;
                 }
             }
+            MostraSlot1.Source = this._associazioneConSimboliClasse['A'];
+            MostraSlot2.Source = this._associazioneConSimboliClasse['A'];
+            MostraSlot3.Source = this._associazioneConSimboliClasse['A'];
 
         }
 
