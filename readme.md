@@ -25,7 +25,21 @@ Per quanto riguarda le proprietà associate ai vari campi, queste devono iniziar
 ## Premesse
 Con la parola 'roll' si intende un giro delle rotelle della slot machine.<br>
 In questa documentazione quando si definisce come un utilizzatore debba interfacciarsi con la classe e vengono nominate delle funzioni queste vengono nominate secondo notazione UML.
-
+## Dipendenze della classe SlotMachine
+## Classe Slot
+Ogni istanza della classe Slot rappresenta uno degli slot della slot machine ( nel nostro caso 3 ).
+### Attributi
+```C#
+private bool _isLocked;
+public bool IsLocked { get => _isLocked; internal set => _isLocked = value; }
+```
+Definisce se lo slot è bloccato oppure no ( per maggiori informazioni fare riferimento alla documentazione della classe 'SlotMachine' ).<br>
+Questo attributo è modificabile direttamente solo dall'assembly di appartenenza ( vedi sezione finale 'specifiche finali' per maggiori informazioni ).
+## Costruttore
+```C#
+public Slot()
+```
+Costruttore di default: inizializza il campo '_isLockes' a false;
 ## La classe SlotMachine
 ### Attributi
 ```C#
@@ -68,7 +82,8 @@ public bool Slot1 { get => this._slot1.IsLocked; set => this._slot1.IsLocked = v
 public bool Slot2 { get => this._slot2.IsLocked; set => this._slot2.IsLocked = value; }
 public bool Slot3 { get => this._slot3.IsLocked; set => this._slot3.IsLocked = value; }
 ```
-Campi privati di tipo 'Slot' ( vedi sezione 'dipendenze' ): all'utilizzatore è permesso di modificarli e di verificare il loro valore.
+Campi privati di tipo 'Slot' ( vedi sezione 'dipendenze' ): all'utilizzatore è permesso di modificarli e di verificare il loro valore.<br>
+Seppur ogni slot metta a disposizione una property pubblica per vedere se è bloccato la classe SlotMachine non espone puntatori alle sue istanze di Slot: durante la fase di implementazione non si è rivelato necessario farlo.
 ```C#
 private char[] _lettere = { 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z' };
 ```
@@ -100,12 +115,19 @@ Per le property dei vari campi controllare la sezione del campo.
 
 ## Interfacciarsi con la classe SlotMachine
 ### Premesse
-La classe mette a disposizione dei modesti e riassuntivi commenti XML di documentazione per i metodi esposti ( ove necessario ).
+La classe mette a disposizione dei modesti e riassuntivi commenti XML di documentazione per i metodi esposti ( ove necessario ).<br>
+In questa sezione ci si potrebbe riferire ai tentativi come 'se si hanno 3 tentativi", "se si sono appena finiti i tentativi": tenere a mente durante la lettura che quando si sono appena finiti i tentativi questi vengono riportati a 3, e quando si hanno 3 tentativi significa che sono appena finiti poiché l'unico modo per averne 3 è rinunciare a quelli rimanenti o finirli.
 ### Aggiunta di credito
-L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ AggiungiCredito(int) : void': l'utilizzatore è incaricato di fornire un valore maggiore di 0, in caso contrario viene sollevata una eccezione di tipo 'ArgumentException'.
+L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ AggiungiCredito(int) : void': l'utilizzatore è incaricato di fornire un valore maggiore di 0, in caso contrario viene sollevata un'eccezione di tipo 'ArgumentException'.
 ### Esecuzione di un roll
 Per eseguire un roll l'utilizzatore può effettuare una chiamata alla funzione '+ Rolla() : char[]': questa ritornerà un array di caratteri con lunghezza 3 contenente il risultato del roll appena fatto ( quel valore sarà disponibile nella property '+ UltimoRoll : char[]' fino al roll successivo ).<br>
-Il metodo appena descritto verrà correttamente eseguito solo se è disponibile del credito: in caso non lo sia l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' sarà sollevata.
+Il metodo appena descritto verrà correttamente eseguito solo se al momento della chiamata è disponibile del credito o la chiamata è compresa in uno dei 2 tentativi rimanenti dopo un primo roll: in caso non lo sia l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' verrà sollevata.
+### Accettazione del corrente risultato
+Nel caso in cui l'utente voglia rinunciare ad 1 o 2 dei tentativi che ha a disposizione dopo il roll iniziale può farlo, ma affinché la rinuncia vada a buon fine bisogna chiamare questo metodo, in modo che la classe ne sia notificata e possa aggiornarsi ( oltre che determinare un'eventuale premio ).<br>
+Questo metodo non deve essere chiamato quando sono appena finiti i tentativi: in caso venga chiamato l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' verrà sollevata.
+### Bloccare 1 o più slot
+Per bloccare uno o più slot è possible usare le rispettive property ( vedi sezione attributi classe ).<br>
+Nel caso in cui gli slot vengano bloccati quando non possono essere bloccati la classe ignorerà il loro blocco.
 
 ## Accortezze in fase di compilazione
 1) Per non dover copiare a mano l'immagine usata nel programma WPF nella directory di output del file eseguibile inserire nel file NomeProgetto.csproj le seguenti righe di codice:
@@ -117,4 +139,3 @@ Il metodo appena descritto verrà correttamente eseguito solo se è disponibile 
     </ItemGroup>
     ```
     Questo permetterà al compilatore di capire l'azione che deve eseguire sul file in fase di compilazione.
-2) Ad ogni modifica del file CSV il programma ha bisogno di essere ricompilato, in modo che la nuova versione del file sia copiata nella cartella dell'eseguibile.

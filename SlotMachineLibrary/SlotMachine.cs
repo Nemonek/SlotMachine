@@ -72,10 +72,10 @@ public class SlotMachine
     /// <exception cref="InvalidOperationException">Se non c'è credito l'operazione è considerata invalida.</exception>
     public char[] Rolla() {
 
-        if (this._credito == 0)
-            throw new InvalidOperationException();
         // Controllare controllo: this._rimanenti == 0 potrebbe non servire 
         if ( this._rimanenti == 3 || this._rimanenti == 0 ) {
+            if (this._credito == 0)
+                throw new InvalidOperationException();
             this._rimanenti--;
             this._credito--;
             this._possoBloccareSlot = true;
@@ -138,9 +138,12 @@ public class SlotMachine
             return 0;
         }
     }
-
+/// <summary>
+/// Notifica la classe che l'utente ha rinunciato ad uno o due dei suoi tentativi.
+/// </summary>
+/// <exception cref="InvalidOperationException">Se chiamato quando l'utente ha 3 tentativi l'operazione è considerata invalida.</exception>
     public void NotificaRinuncia() {
-        if (this._rimanenti == 3) throw new();
+        if (this._rimanenti == 3) throw new InvalidOperationException();
         this._vincita += DeterminaPremio();
         this._rimanenti = 3;
         this._possoBloccareSlot = false;
