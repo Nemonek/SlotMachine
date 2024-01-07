@@ -123,7 +123,7 @@ Importare il namespace 'SlotMachineLibrary':
 ```C#
 using SlotMachineLibrary;
 ```
-Creare un oggetto SlotMachine. ( vedi sezione 'Uso del costruttore' per la classe SlotMachine )
+Creare un oggetto SlotMachine. ( vedi sezione 'Uso del costruttore' per la classe SlotMachine ).
 
 ### Aggiunta di credito
 L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ AggiungiCredito(int) : void': l'utilizzatore è incaricato di fornire un valore maggiore di 0, in caso contrario viene sollevata un'eccezione di tipo 'ArgumentException'.
@@ -131,7 +131,7 @@ L'aggiunta del credito è eseguibile dall'esterno tramite la funzione '+ Aggiung
 Per eseguire un roll l'utilizzatore può effettuare una chiamata alla funzione '+ Rolla() : char[]': questa ritornerà un array di caratteri con lunghezza 3 contenente il risultato del roll appena fatto ( quel valore sarà disponibile nella property '+ UltimoRoll : char[]' fino al roll successivo ).<br>
 Il metodo appena descritto verrà correttamente eseguito solo se al momento della chiamata è disponibile del credito o la chiamata è compresa in uno dei 2 tentativi rimanenti dopo un primo roll: in caso non lo sia l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' verrà sollevata.
 ### Accettazione del corrente risultato
-Nel caso in cui l'utente voglia rinunciare ad 1 o 2 dei tentativi che ha a disposizione dopo il roll iniziale può farlo, ma affinché la rinuncia vada a buon fine bisogna chiamare questo metodo, in modo che la classe ne sia notificata e possa aggiornarsi ( oltre che determinare un'eventuale premio ).<br>
+Nel caso in cui l'utente voglia rinunciare ad 1 o 2 dei tentativi che ha a disposizione dopo il roll iniziale può farlo, ma affinché la rinuncia vada a buon fine bisogna chiamare il metodo '+ NotificaRinuncia() : void', in modo che la classe ne sia notificata e possa aggiornarsi ( oltre che determinare un'eventuale premio ).<br>
 Questo metodo non deve essere chiamato quando sono appena finiti i tentativi: in caso venga chiamato l'operazione sarà considerata invalida ed un eccezione di tipo 'InvalidOperationException' verrà sollevata.
 ### Bloccare 1 o più slot
 Per bloccare uno o più slot è possible usare le rispettive property ( vedi sezione attributi classe ).<br>
