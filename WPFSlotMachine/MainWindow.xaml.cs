@@ -44,7 +44,7 @@ namespace WPFSlotMachine
         private void InizializzaImmagini() {
             this._associazioneConSimboliClasse = new();
             char[] simboliUsatiDallaClasse = this._machine.OttieniSimboli();
-            BitmapImage b = new(new Uri(@"./Media/Assets2.jpg", UriKind.Relative));
+            BitmapImage b = new(new Uri(@"./Media/Assets.jpg", UriKind.Relative));
             int larghezzaTotale = b.PixelWidth;
             int altezzaTotale = b.PixelHeight;
 

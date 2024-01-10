@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Media\Assets.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Media\Assets.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
